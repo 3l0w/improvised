@@ -13,8 +13,14 @@ pipeline {
             }
         }
 
+        stage('Store') {
+            steps {
+                archiveArtifacts artifacts: 'improvised', followSymlinks: false
+            }
+        }
+
         stage('Docker Build') {
-         steps {
+            steps {
                 script {
                      image = docker.build("3l0w/improvised:latest")
                 }
