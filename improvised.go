@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/go-redis/redis/v8"
+	"github.com/jessevdk/go-flags"
 	"github.com/pires/go-proxyproto"
 	"io"
 	"log"
@@ -17,17 +18,24 @@ import (
 
 var ctx = context.Background()
 
-func main() {
-	fmt.Println("Starting Improvised !")
+var opts struct {
+	RedisAddress     string `long:"redisAddress" description:"Redis address" required:"true"`
+	RedisUsername    string `long:"redisUsername" description:"Redis username"`
+	RedisPassword    string `long:"redisPassword" description:"Redis password"`
+	RedisDB          int    `long:"redisDB" description:"Redis db number" default:"0"`
+	LoadBalancerPort int    `short:"p" long:"port" description:"The port where improvised will run" default:"8888"`
+}
 
-	port := 8888
-	if len(os.Args) >= 2 {
-		number, err := strconv.Atoi(os.Args[1])
-		if err != nil {
-			log.Panic("Parameter 1 is not a number", err)
-		}
-		port = number
+func main() {
+	log.Println("Starting Improvised !")
+
+	_, err := flags.Parse(&opts)
+
+	if err != nil {
+		os.Exit(1)
 	}
+
+	port := opts.LoadBalancerPort
 
 	listener, err := net.Listen("tcp", ":"+strconv.Itoa(port))
 	checkError(err)
@@ -35,9 +43,10 @@ func main() {
 
 	source := Redis{
 		Options: &redis.Options{
-			Addr:     "localhost:6379",
-			Password: "",
-			DB:       0,
+			Addr:     opts.RedisAddress,
+			Username: opts.RedisUsername,
+			Password: opts.RedisPassword,
+			DB:       opts.RedisDB,
 		},
 	}
 	err = source.init()
