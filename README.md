@@ -1,7 +1,7 @@
 # Improvised 
 [![Build Status](https://ci.3l0w.fr/job/Github/job/improvised/job/master/badge/icon)](https://ci.3l0w.fr/job/Github/job/improvised/job/master/)
 [![Go Report Card](https://goreportcard.com/badge/3l0w/improvised)](https://goreportcard.com/report/3l0w/improvised)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/3l0w/improvised)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/3l0w/improvised/blob/master/LICENSE)
 
 A dynamic TCP load balancer for easily switch between multiple services.
 
