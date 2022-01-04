@@ -125,11 +125,11 @@ func copyConn(src net.Conn, dstAddr *net.TCPAddr) {
 	<-done
 }
 
-var ErrNetClosing = errors.New("use of closed network connection")
+var errNetClosing = errors.New("use of closed network connection")
 
-func IsErrNetClosing(err error) bool {
+func isErrNetClosing(err error) bool {
 	if e, ok := err.(*net.OpError); ok {
-		return e.Err.Error() == ErrNetClosing.Error()
+		return e.Err.Error() == errNetClosing.Error()
 	}
 	return false
 }
@@ -138,7 +138,7 @@ func closeConnection(conn net.Conn) {
 	err := conn.Close()
 
 	if err != nil {
-		if !IsErrNetClosing(err) {
+		if !isErrNetClosing(err) {
 			fmt.Println(err)
 		}
 	}

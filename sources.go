@@ -6,12 +6,14 @@ import (
 	"math/rand"
 )
 
+// Source Define some method who need to be impl for each source
 type Source interface {
 	init()
 	refresh() []string
 	getRandom() string
 }
 
+// Redis Source for redis
 type Redis struct {
 	rdb *redis.Client
 	*redis.Options
